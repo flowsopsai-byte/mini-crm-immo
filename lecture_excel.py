@@ -10,73 +10,117 @@ print()
 print(f"Max row = {feuille.max_row}")
 print()
 
-action = input("Que souhaitez-vous faire ?\n1 - Rechercher un prospect\n2 - Ajouter un prospect\n")
-print(f"Votre choix : {action}")
-print()
-
-if action == "1":
-
-    nom = input("Quel prospect recherchez-vous?")
-    trouve = False
+while True:   
     
-    for ligne in range(3, feuille.max_row + 1):
+    action = input("Que souhaitez-vous faire ?\n1 - Rechercher un prospect\n2 - Ajouter un prospect\n3 - Supprimer un prospect\n4 - Quitter\n")
+    print(f"Votre choix : {action}")
+    print()
 
-        if feuille.cell(row=ligne, column=1).value.lower()  == nom.lower():
-            trouve = True 
-            print(f"{feuille.cell(row=ligne, column=1).value} - {feuille.cell(row=ligne, column=2).value}")
+    if action == "1":
+
+        nom = input("Quel prospect recherchez-vous?")
+        trouve = False
+    
+    
+        for ligne in range(3, feuille.max_row + 1):
+
+            nom_excel = feuille.cell(row=ligne, column=1).value
+
+            if nom_excel is not None and nom_excel.lower() == nom.lower():
+                trouve = True 
+                print(f"{feuille.cell(row=ligne, column=1).value} - {feuille.cell(row=ligne, column=2).value}")
         
-            while True:
+                while True:
 
-                change = input("Voulez-vous changer son budget? Oui/Non : ")
+                    change = input("Voulez-vous changer son budget? Oui/Non : ")
 
-                if change == "Oui":
-                    nouveau = int(input("Quel est le nouveau budget? "))
-                    feuille.cell(row=ligne, column=2).value = nouveau
+                    if change.lower() == "Oui".lower():
+                        nouveau = int(input("Quel est le nouveau budget? "))
+                        feuille.cell(row=ligne, column=2).value = nouveau
+                        classeur.save("prospects_immo copy.xlsx")
+                        print("Nouveau budget enregistré!")
+                        break
+
+                    elif change.lower() == "Non".lower():
+                        print("À très bientôt!")
+                        break 
+        
+                    else:
+                        print("Entrée incorrecte. Veuillez répondre par Oui ou Non")
+
+        if trouve == False: 
+                print("Aucun prospect trouvé. Allez jouer ailleurs! On est occupé ici.")
+
+    elif action == "2":
+
+        new_pros = input("Nom du nouveau prospect : ")
+        zob = False
+    
+        for zgeg in range(3, feuille.max_row + 1):
+        
+            if feuille.cell(row=zgeg, column=1).value is not None and new_pros.lower() == feuille.cell(row=zgeg, column=1).value.lower()  :
+                zob = True
+                print()
+                print("Ce prospect existe déja. Veuillez aller jouer dans le jardin.")
+                break
+
+        if zob == False:
+
+            new_budget = int(input("Quel est son budget : "))
+            ligne_libre = 3
+                        
+            while feuille.cell(row=ligne_libre, column=1).value is not None:
+                ligne_libre += 1
+                        
+            feuille.cell(row=ligne_libre, column=1).value = new_pros
+            feuille.cell(row=ligne_libre, column=2).value = new_budget
+                        
+            classeur.save("prospects_immo copy.xlsx")
+            
+            if new_budget < 300000:
+                print("Nouveau prospect ajouté... mais un tocard...")
+            else:
+                print("Nouveau prospect ajouté ! LET'S MAKE MONEY !!! $$$ ;-) ")
+    
+    elif action == "3":
+
+        delete = input("Quel prospect supprimer ?")
+        trouvee = False
+        
+        for ligne in range(3, feuille.max_row + 1):
+
+            zboub = feuille.cell(row=ligne, column=1).value
+            thune = feuille.cell(row=ligne, column=2).value
+            
+            if zboub is not None and zboub.lower() == delete.lower():
+                trouvee = True
+                print(f"Prospect trouvé : {zboub} - {thune}") 
+                print()
+                deletion = input("Confirmer la suppression ? Oui/Non :")
+
+                if deletion.lower() == "Oui".lower():
+                    feuille.delete_rows(ligne)
                     classeur.save("prospects_immo copy.xlsx")
-                    print("Nouveau budget enregistré!")
                     break
 
-                elif change == "Non":
-                    print("À très bientôt!")
-                    break 
-        
-                else:
-                    print("Entrée incorrecte. Veuillez répondre par Oui ou Non")
+                elif deletion.lower() == "Non".lower():
+                    print("Ok, mais j'ai pas que ça à faire moi")
+                    break
 
-    if trouve == False: 
+                else:
+                    print("Veuillez entrer Oui ou Non")
+
+        if trouvee == False: 
             print("Aucun prospect trouvé. Allez jouer ailleurs! On est occupé ici.")
 
-elif action == "2":
+    elif action == "4":
+        print("À bientôt !")
+        break
 
-    new_pros = input("Nom du nouveau prospect : ")
-    zob = False
-    
-    for zgeg in range(3, feuille.max_row + 1):
-        
-        if new_pros.lower() == feuille.cell(row=zgeg, column=1).value.lower() :
-            zob = True
-            print()
-            print("Ce prospect existe déja. Veuillez aller jouer dans le jardin.")
-            break
+    else:
+        print("Choix invalide. Veuillez répondre par: 1, 2 ou 3")
+        print()
 
-    if zob == False:
-
-        new_budget = int(input("Quel est son budget : "))
-        ligne_libre = 3
-                        
-        while feuille.cell(row=ligne_libre, column=1).value is not None:
-            ligne_libre += 1
-                        
-        feuille.cell(row=ligne_libre, column=1).value = new_pros
-        feuille.cell(row=ligne_libre, column=2).value = new_budget
-                        
-        classeur.save("prospects_immo copy.xlsx")
-            
-        if new_budget < 300000:
-            print("Nouveau prospect ajouté... mais un tocard...")
-        else:
-            print("Nouveau prospect ajouté ! LET'S MAKE MONEY !!! $$$ ;-) ")
-    
-
+print("À très bientôt mon chat...")
     
 
