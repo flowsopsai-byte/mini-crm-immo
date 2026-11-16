@@ -12,7 +12,7 @@ print()
 
 while True:   
     
-    action = input("Que souhaitez-vous faire ?\n1 - Rechercher un prospect\n2 - Ajouter un prospect\n3 - Supprimer un prospect\n4 - Quitter\n")
+    action = input("Que souhaitez-vous faire ?\n1 - Rechercher un prospect\n2 - Ajouter un prospect\n3 - Supprimer un prospect\n4 - Afficher tous les prospects\n5 - Quitter\n")
     print(f"Votre choix : {action}")
     print()
 
@@ -96,24 +96,48 @@ while True:
                 trouvee = True
                 print(f"Prospect trouvé : {zboub} - {thune}") 
                 print()
-                deletion = input("Confirmer la suppression ? Oui/Non :")
+                
+                while True:
 
-                if deletion.lower() == "Oui".lower():
-                    feuille.delete_rows(ligne)
-                    classeur.save("prospects_immo copy.xlsx")
-                    break
+                    deletion = input("Confirmer la suppression ? Oui/Non :")
 
-                elif deletion.lower() == "Non".lower():
-                    print("Ok, mais j'ai pas que ça à faire moi")
-                    break
+                    if deletion.lower() == "Oui".lower():
+                        feuille.delete_rows(ligne)
+                        classeur.save("prospects_immo copy.xlsx")
+                        break
 
-                else:
-                    print("Veuillez entrer Oui ou Non")
+                    elif deletion.lower() == "Non".lower():
+                        print("Ok, mais j'ai pas que ça à faire moi")
+                        break
+
+                    else:
+                        print()
+                        print("Veuillez entrer Oui ou Non")
+                
+                break
 
         if trouvee == False: 
             print("Aucun prospect trouvé. Allez jouer ailleurs! On est occupé ici.")
 
     elif action == "4":
+        for i in range(3, feuille.max_row + 1):
+            if feuille.cell(row=i, column=1).value:
+                print(f"{feuille.cell(row=i, column=1).value} - {feuille.cell(row=i, column=2).value}")
+
+        while True:
+            suite = input("Souhaitez-vous faire autre chose ? Oui/Non: ")
+            
+            if suite.lower() == "oui".lower():
+                break
+
+            elif suite.lower() == "non".lower():
+                print("Dégagez alors ! Et rapido !")
+                
+            else:
+                ("Veuillez réppondre par Oui ou Non")
+
+    
+    elif action == "5":
         print("À bientôt !")
         break
 
