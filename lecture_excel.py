@@ -10,7 +10,9 @@ print()
 print(f"Max row = {feuille.max_row}")
 print()
 
-while True:   
+continuer = True
+
+while continuer == True:   
     
     action = input("Que souhaitez-vous faire ?\n1 - Rechercher un prospect\n2 - Ajouter un prospect\n3 - Supprimer un prospect\n4 - Afficher tous les prospects\n5 - Quitter\n")
     print(f"Votre choix : {action}")
@@ -43,30 +45,40 @@ while True:
 
                     elif change.lower() == "Non".lower():
                         print("À très bientôt!")
-                        break 
+                        break
         
                     else:
                         print("Entrée incorrecte. Veuillez répondre par Oui ou Non")
 
         if trouve == False: 
                 print("Aucun prospect trouvé. Allez jouer ailleurs! On est occupé ici.")
+                continuer = False
+                break
 
     elif action == "2":
 
         new_pros = input("Nom du nouveau prospect : ")
         zob = False
+        
     
         for zgeg in range(3, feuille.max_row + 1):
         
             if feuille.cell(row=zgeg, column=1).value is not None and new_pros.lower() == feuille.cell(row=zgeg, column=1).value.lower()  :
                 zob = True
                 print()
-                print("Ce prospect existe déja. Veuillez aller jouer dans le jardin.")
+                print("Ce prospect existe déja. Veuillez aller jouer dans le jardin!")
+                print()
                 break
 
         if zob == False:
 
-            new_budget = int(input("Quel est son budget : "))
+            while True:
+                try:
+                    new_budget = int(input("Quel est son budget : "))
+                    break
+                except ValueError:
+                    print("Tu dois entrer un nombre !")
+            
             ligne_libre = 3
                         
             while feuille.cell(row=ligne_libre, column=1).value is not None:
@@ -76,11 +88,13 @@ while True:
             feuille.cell(row=ligne_libre, column=2).value = new_budget
                         
             classeur.save("prospects_immo copy.xlsx")
-            
             if new_budget < 300000:
                 print("Nouveau prospect ajouté... mais un tocard...")
+                print()
+            
             else:
                 print("Nouveau prospect ajouté ! LET'S MAKE MONEY !!! $$$ ;-) ")
+                
     
     elif action == "3":
 
@@ -120,10 +134,11 @@ while True:
             print("Aucun prospect trouvé. Allez jouer ailleurs! On est occupé ici.")
 
     elif action == "4":
+        
         for i in range(3, feuille.max_row + 1):
             if feuille.cell(row=i, column=1).value:
                 print(f"{feuille.cell(row=i, column=1).value} - {feuille.cell(row=i, column=2).value}")
-
+        
         while True:
             suite = input("Souhaitez-vous faire autre chose ? Oui/Non: ")
             
@@ -132,11 +147,13 @@ while True:
 
             elif suite.lower() == "non".lower():
                 print("Dégagez alors ! Et rapido !")
-                
+                print()
+                continuer = False
+                break
+            
             else:
-                ("Veuillez réppondre par Oui ou Non")
+                print("Veuillez répondre par Oui ou Non")
 
-    
     elif action == "5":
         print("À bientôt !")
         break
