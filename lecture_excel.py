@@ -37,7 +37,22 @@ while continuer == True:
                     change = input("Voulez-vous changer son budget? Oui/Non : ")
 
                     if change.lower() == "Oui".lower():
-                        nouveau = int(input("Quel est le nouveau budget? "))
+                        
+                        while True:
+                            try:
+                                nouveau = int(input("Quel est le nouveau budget? "))
+                            
+                                if nouveau <= 0:
+                                    print("Veuillez entrer un montant supérieur à 0 !")
+                                    print()
+                                    
+                                else:
+                                    break
+                                            
+                            except ValueError:
+                                print("Tu dois entrer un nombre !")
+                                
+                        
                         feuille.cell(row=ligne, column=2).value = nouveau
                         classeur.save("prospects_immo copy.xlsx")
                         print("Nouveau budget enregistré!")
@@ -75,7 +90,12 @@ while continuer == True:
             while True:
                 try:
                     new_budget = int(input("Quel est son budget : "))
-                    break
+                    
+                    if new_budget <= 0:
+                        print("Veuillez entrer un montant supérieur à 0 !")
+                    else:
+                        break
+                    
                 except ValueError:
                     print("Tu dois entrer un nombre !")
             
@@ -88,7 +108,8 @@ while continuer == True:
             feuille.cell(row=ligne_libre, column=2).value = new_budget
                         
             classeur.save("prospects_immo copy.xlsx")
-            if new_budget < 300000:
+            
+            if new_budget > 0 and new_budget < 300000:
                 print("Nouveau prospect ajouté... mais un tocard...")
                 print()
             
